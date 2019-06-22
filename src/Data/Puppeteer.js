@@ -58,9 +58,7 @@ exports._click = _click;
 var _screenshot = function _screenshot(page) {
   return function (screenshotOptions) {
     return function () {
-      return page.screenshot({
-        screenshotOptions: screenshotOptions
-      });
+      return page.screenshot(screenshotOptions);
     };
   };
 };
