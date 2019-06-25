@@ -24,25 +24,25 @@ foreign import _waitForSelector :: Page -> Selector -> Effect (Promise Unit)
 
 type Options =
   { headless :: Boolean
-  , sloMo :: Int
+  , sloMo    :: Int
   }
 
 type Selector = String
 
 type ScreenshotOptions =
-  { path :: String
-  --, extension :: String
-  --, quality :: Number
-  , fullPage :: Boolean
-  --, clip :: Clip
+  { path             :: String
+  --, extension      :: String
+  --, quality        :: Number
+  , fullPage         :: Boolean
+  --, clip           :: Clip
   --, omitBackground :: Boolean
-  --, encoding :: String
+  --, encoding       :: String
   }
 
 type Clip =
-  { x :: Number
-  , y :: Number
-  , width :: Number
+  { x      :: Number
+  , y      :: Number
+  , width  :: Number
   , height :: Number
   }
 
