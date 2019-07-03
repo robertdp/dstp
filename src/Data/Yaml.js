@@ -8,9 +8,7 @@ exports._safeLoad = void 0;
 var yaml = require('js-yaml');
 
 var _safeLoad = function _safeLoad(target) {
-  return function () {
-    return yaml.safeLoad(target);
-  };
+  return yaml.safeLoad(target);
 };
 
 exports._safeLoad = _safeLoad;

@@ -1,21 +1,10 @@
 module Data.Yaml where
 
-import Control.Monad.Error.Class
-import Control.Monad.Except
-import Data.List.Types
-import Effect.Aff.Compat
-import Foreign
-import Prelude
 
-import Data.Either (Either(..))
-import Data.Function.Uncurried (Fn3, runFn3)
-import Effect (Effect)
-import Effect.Aff (Aff, Error)
-import Effect.Class (liftEffect)
-import Effect.Class.Console as Console
+import Data.Function.Uncurried (Fn1, runFn1)
 
-foreign import _safeLoad :: String -> F Foreign
+foreign import _safeLoad :: Fn1 String String
 
-
-safeLoad :: String -> Either (NonEmptyList ForeignError) Foreign
-safeLoad yaml = runExcept $ _safeLoad yaml
+safeLoad :: String -> String
+safeLoad yaml = do
+  runFn1 _safeLoad yaml
