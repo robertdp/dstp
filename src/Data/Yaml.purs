@@ -1,9 +1,18 @@
 module Data.Yaml where
 
 
+import Control.Monad.Except
+import Data.Either
+import Data.Identity
+import Effect.Exception
+import Effect.Unsafe
+import Foreign
+import Prelude
+
+import Data.Bifunctor (lmap)
 import Data.Function.Uncurried (Fn1, runFn1)
 
-foreign import _safeLoad :: Fn1 String String
+foreign import safeLoadImpl :: Fn1 String (F Foreign)
 
 data Kind = Goto | Input | Submit | Click
 
@@ -34,6 +43,10 @@ type Field =
   , value    :: String
   }
 
-safeLoad :: String -> String
-safeLoad yaml = do
-  runFn1 _safeLoad yaml
+safeLoad :: String -> F Foreign
+safeLoad yaml = runFn1 safeLoadImpl yaml
+
+parseYAML :: String -> String
+parseYAML yaml = case runExcept $ safeLoad yaml of
+  Left err -> "counld not parse yaml"
+  Right result -> tagOf result

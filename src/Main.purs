@@ -10,7 +10,7 @@ import Effect.Aff (launchAff_)
 
 main :: _
 main = do
-  log $ Y.safeLoad template
+  log $ Y.parseYAML template
 
 
 template :: String
