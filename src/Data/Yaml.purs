@@ -14,7 +14,30 @@ import Data.Function.Uncurried (Fn1, runFn1)
 
 foreign import safeLoadImpl :: Fn1 String (F Foreign)
 
-data Kind = Goto | Input | Submit | Click
+{-
+yaml structure
+
+dstp:
+  settings:
+    headless: boolean
+    debug: boolean
+
+  difinitions:
+    - name string
+      baseUrl: string
+      enabled: boolean
+      route:
+        - type: "goto"
+          url: string
+        - type: "imput"
+          field:
+            selector: string
+            value: string
+
+
+-}
+
+data Kind = Goto | Input
 
 type Dstp =
   { setting :: Setting
