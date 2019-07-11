@@ -8,6 +8,7 @@ import Prelude
 import Control.Monad.Except (runExcept)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype, unwrap, wrap)
+import Data.NonEmpty as NonEmpty
 import Data.Puppeteer as P
 import Data.Yaml as Y
 import Effect (Effect)
@@ -15,7 +16,6 @@ import Effect.Aff (error, launchAff_)
 import Effect.Class (liftEffect)
 import Effect.Class.Console as Console
 import Foreign.Generic (class Decode, Foreign, decode)
-import Data.NonEmpty
 
 main :: _
 main = do
@@ -24,10 +24,10 @@ main = do
     Left e -> Console.log $ show e
     Right yaml -> do
       case runExcept(decode yaml) of
-        Left e -> do
-          case e of
-            NonEmpty e1 -> Console.log $ e1
-        Right y -> Console.log y
+        Left decodeErr ->
+          Console.log $ show $ decodeErr
+        Right output ->
+          Console.log output
 
 --main :: _
 --main =  do
