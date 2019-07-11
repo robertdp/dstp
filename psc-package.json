@@ -8,6 +8,7 @@
     "console",
     "effect",
     "foreign",
+    "foreign-generic",
     "prelude",
     "psci-support",
     "transformers"

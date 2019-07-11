@@ -97,3 +97,9 @@ waitForSelector page selector = do
   Console.log "waitForSelector"
   promise <- liftEffect (_waitForSelector page selector)
   Promise.toAff promise
+
+
+test :: forall a b. (a -> b) -> Aff Unit
+test arg = do
+  promise <- liftEffect $ arg
+  Promise.toAff promise

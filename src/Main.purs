@@ -1,17 +1,25 @@
 module Main where
 
-import Effect.Console(log)
+import Data.Either
+import Foreign
 import Prelude
 
+import Control.Monad.Except (runExcept)
+import Data.Maybe (Maybe(..))
 import Data.Puppeteer as P
 import Data.Yaml as Y
 import Effect (Effect)
-import Effect.Aff (launchAff_)
+import Effect.Aff (error, launchAff_)
+import Effect.Class (liftEffect)
+import Effect.Class.Console as Console
+import Foreign.Generic (class Decode, Foreign, decode)
 
 main :: _
-main = do
-  log $ Y.parseYAML template
-
+main =  do
+  maybeYaml <- Y.parseYaml template
+  case maybeYaml of
+    Nothing -> Console.log "can't load"
+    Just yaml -> Console.log yaml
 
 template :: String
 template = """

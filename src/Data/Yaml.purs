@@ -1,18 +1,19 @@
 module Data.Yaml where
 
 
-import Control.Monad.Except
-import Data.Either
-import Data.Identity
-import Effect.Exception
-import Effect.Unsafe
-import Foreign
+import Control.Apply
 import Prelude
 
-import Data.Bifunctor (lmap)
-import Data.Function.Uncurried (Fn1, runFn1)
+import Control.Monad.Except (lift, runExcept)
+import Data.Either (Either(..))
+import Data.Maybe (Maybe(..))
+import Effect (Effect)
+import Effect.Console (log)
+import Effect.Exception (try)
+import Effect.Uncurried (EffectFn1, runEffectFn1)
+import Foreign.Generic (class Decode, Foreign, decode)
 
-foreign import safeLoadImpl :: Fn1 String (F Foreign)
+foreign import safeLoadImpl :: EffectFn1 String Foreign
 
 {-
 yaml structure
@@ -41,7 +42,7 @@ data Kind = Goto | Input
 
 type Dstp =
   { setting :: Setting
-  , routes  :: Array Difinitions
+  , routes  :: Maybe (Array Difinitions)
   }
 
 type Setting =
@@ -66,10 +67,19 @@ type Field =
   , value    :: String
   }
 
-safeLoad :: String -> F Foreign
-safeLoad yaml = runFn1 safeLoadImpl yaml
+parseYaml' :: _
+parseYaml' input = do
+  try $ runEffectFn1 safeLoadImpl input
 
-parseYAML :: String -> String
-parseYAML yaml = case runExcept $ safeLoad yaml of
-  Left err -> "counld not parse yaml"
-  Right result -> tagOf result
+parseYaml :: forall a. Decode a => String -> Effect (Maybe a)
+parseYaml input = do
+  maybeYaml <- try $ runEffectFn1 safeLoadImpl input
+  pure case maybeYaml of
+    Left loadErr ->
+      Nothing
+    Right yaml -> do
+      case runExcept(decode yaml) of
+        Left decodeErr ->
+          Nothing
+        Right output ->
+          Just output
