@@ -15,6 +15,7 @@ import Effect.Aff (error, launchAff_)
 import Effect.Class (liftEffect)
 import Effect.Class.Console as Console
 import Foreign.Generic (class Decode, Foreign, decode)
+import Data.NonEmpty
 
 main :: _
 main = do
@@ -23,7 +24,9 @@ main = do
     Left e -> Console.log $ show e
     Right yaml -> do
       case runExcept(decode yaml) of
-        Left e -> Console.log $ head >>> tagOf >>> e
+        Left e -> do
+          case e of
+            NonEmpty e1 -> Console.log $ e1
         Right y -> Console.log y
 
 --main :: _
