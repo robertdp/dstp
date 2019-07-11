@@ -6,8 +6,10 @@ import Prelude
 
 import Control.Monad.Except (lift, runExcept)
 import Data.Either (Either(..))
-import Data.Maybe (Maybe(..))
+import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Newtype (class Newtype, unwrap, wrap)
 import Effect (Effect)
+import Effect.Class.Console as Console
 import Effect.Console (log)
 import Effect.Exception (try)
 import Effect.Uncurried (EffectFn1, runEffectFn1)
@@ -40,17 +42,17 @@ dstp:
 
 data Kind = Goto | Input
 
-type Dstp =
+newtype Dstp = Dstp
   { setting :: Setting
   , routes  :: Maybe (Array Difinitions)
   }
 
-type Setting =
+newtype Setting = Setting
   { headless :: Boolean
   , debug    :: Boolean
   }
 
-type Difinitions =
+newtype Difinitions = Difinitions
   { name    :: String
   , baseUrl :: String
   , enabled :: Boolean
@@ -66,6 +68,11 @@ type Field =
   { selector :: String
   , value    :: String
   }
+
+--derive instance newtypeDstp :: Dstp Adspot _
+--
+--instance decodeDstp :: Decode Dstp where
+--  decode = decode >>> map wrap
 
 parseYaml' :: _
 parseYaml' input = do

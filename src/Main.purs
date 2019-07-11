@@ -1,11 +1,13 @@
 module Main where
 
 import Data.Either
+import Data.List.NonEmpty
 import Foreign
 import Prelude
 
 import Control.Monad.Except (runExcept)
 import Data.Maybe (Maybe(..))
+import Data.Newtype (class Newtype, unwrap, wrap)
 import Data.Puppeteer as P
 import Data.Yaml as Y
 import Effect (Effect)
@@ -15,11 +17,21 @@ import Effect.Class.Console as Console
 import Foreign.Generic (class Decode, Foreign, decode)
 
 main :: _
-main =  do
-  maybeYaml <- Y.parseYaml template
+main = do
+  maybeYaml <- Y.parseYaml' template
   case maybeYaml of
-    Nothing -> Console.log "can't load"
-    Just yaml -> Console.log yaml
+    Left e -> Console.log $ show e
+    Right yaml -> do
+      case runExcept(decode yaml) of
+        Left e -> Console.log $ head >>> tagOf >>> e
+        Right y -> Console.log y
+
+--main :: _
+--main =  do
+--  maybeYaml <- Y.parseYaml template
+--  case maybeYaml of
+--    Nothing -> Console.log "can't load"
+--    Just yaml -> Console.log yaml
 
 template :: String
 template = """

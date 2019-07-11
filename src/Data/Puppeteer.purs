@@ -99,7 +99,7 @@ waitForSelector page selector = do
   Promise.toAff promise
 
 
-test :: forall a b. (a -> b) -> Aff Unit
-test arg = do
-  promise <- liftEffect $ arg
-  Promise.toAff promise
+--test :: forall a b. (a -> b) -> Aff Unit
+--test arg = do
+--  promise <- liftEffect $ arg
+--  Promise.toAff promise
