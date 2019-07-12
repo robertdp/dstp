@@ -2,6 +2,7 @@ module Data.Yaml where
 
 
 import Control.Apply
+import Data.Generic.Rep
 import Foreign.Generic.Class
 import Prelude
 
@@ -15,7 +16,6 @@ import Effect.Console (log)
 import Effect.Exception (try)
 import Effect.Uncurried (EffectFn1, runEffectFn1)
 import Foreign.Generic (class Decode, Foreign, decode, genericDecode)
-import Data.Generic.Rep
 
 foreign import safeLoadImpl :: EffectFn1 String Foreign
 
@@ -72,10 +72,19 @@ type Field =
   }
 
 
---derive instance genericDstp :: Generic Dstp _
---
---instance decodeDstp :: Decode Dstp where
---  decode = genericDecode (defaultOptions { unwrapSingleConstructors = true })
+derive instance newtypeDstp :: Newtype Dstp _
+derive instance newtypeSetting :: Newtype Setting _
+derive instance newtypeDifinitions :: Newtype Difinitions _
+
+instance decodeDstp :: Decode Dstp where
+  decode = decode >>> map wrap
+
+instance decodeSetting :: Decode Setting where
+  decode = decode >>> map wrap
+
+instance decodeDifinitions :: Decode Difinitions where
+  decode = decode >>> map wrap
+
 
 parseYaml' :: _
 parseYaml' input = do
