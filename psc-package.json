@@ -9,6 +9,7 @@
     "effect",
     "foreign",
     "foreign-generic",
+    "generics-rep",
     "prelude",
     "psci-support",
     "transformers"

@@ -7,7 +7,7 @@ import Prelude
 
 import Control.Monad.Except (runExcept)
 import Data.Maybe (Maybe(..))
-import Data.Newtype (class Newtype, unwrap, wrap)
+import Data.Newtype (class Newtype, traverse, unwrap, wrap)
 import Data.NonEmpty as NonEmpty
 import Data.Puppeteer as P
 import Data.Yaml as Y

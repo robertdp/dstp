@@ -2,6 +2,7 @@ module Data.Yaml where
 
 
 import Control.Apply
+import Foreign.Generic.Class
 import Prelude
 
 import Control.Monad.Except (lift, runExcept)
@@ -13,7 +14,8 @@ import Effect.Class.Console as Console
 import Effect.Console (log)
 import Effect.Exception (try)
 import Effect.Uncurried (EffectFn1, runEffectFn1)
-import Foreign.Generic (class Decode, Foreign, decode)
+import Foreign.Generic (class Decode, Foreign, decode, genericDecode)
+import Data.Generic.Rep
 
 foreign import safeLoadImpl :: EffectFn1 String Foreign
 
@@ -69,10 +71,11 @@ type Field =
   , value    :: String
   }
 
---derive instance newtypeDstp :: Dstp Adspot _
+
+--derive instance genericDstp :: Generic Dstp _
 --
 --instance decodeDstp :: Decode Dstp where
---  decode = decode >>> map wrap
+--  decode = genericDecode (defaultOptions { unwrapSingleConstructors = true })
 
 parseYaml' :: _
 parseYaml' input = do
