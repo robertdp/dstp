@@ -5,93 +5,75 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports._waitForSelector = exports._waitForNavigation = exports._submit = exports._screenshot = exports._click = exports._close = exports._goto = exports._newPage = exports._launch = void 0;
+exports.waitForSelectorImpl = exports.waitForNavigationImpl = exports.submitImpl = exports.screenshotImpl = exports.clickImpl = exports.closeImpl = exports.gotoImpl = exports.newPageImpl = exports.launchImpl = void 0;
 
 var _objectDestructuringEmpty2 = _interopRequireDefault(require("@babel/runtime/helpers/objectDestructuringEmpty"));
 
 var puppeteer = require('puppeteer');
 
-var _launch = function _launch(options) {
-  return function () {
-    return puppeteer.launch(options);
-  };
+var launchImpl = function launchImpl(options) {
+  return puppeteer.launch(options);
 };
 
-exports._launch = _launch;
+exports.launchImpl = launchImpl;
 
-var _newPage = function _newPage(browser) {
-  return function () {
-    return browser.newPage();
-  };
+var newPageImpl = function newPageImpl(browser) {
+  return browser.newPage();
 };
 
-exports._newPage = _newPage;
+exports.newPageImpl = newPageImpl;
 
-var _goto = function _goto(page) {
+var gotoImpl = function gotoImpl(page) {
   return function (url) {
-    return function () {
-      return page["goto"](url);
-    };
+    return page["goto"](url);
   };
 };
 
-exports._goto = _goto;
+exports.gotoImpl = gotoImpl;
 
-var _close = function _close(browser) {
-  return function () {
-    return browser.close();
-  };
+var closeImpl = function closeImpl(browser) {
+  return browser.close();
 };
 
-exports._close = _close;
+exports.closeImpl = closeImpl;
 
-var _click = function _click(page) {
+var clickImpl = function clickImpl(page) {
   return function (selector) {
-    return function () {
-      return page.click(selector);
-    };
+    return page.click(selector);
   };
 };
 
-exports._click = _click;
+exports.clickImpl = clickImpl;
 
-var _screenshot = function _screenshot(page) {
+var screenshotImpl = function screenshotImpl(page) {
   return function (screenshotOptions) {
-    return function () {
-      return page.screenshot(screenshotOptions);
-    };
+    return page.screenshot(screenshotOptions);
   };
 };
 
-exports._screenshot = _screenshot;
+exports.screenshotImpl = screenshotImpl;
 
-var _submit = function _submit(page) {
+var submitImpl = function submitImpl(page) {
   return function (selector) {
-    return function () {
-      return page.evaluate(function (_ref) {
-        (0, _objectDestructuringEmpty2["default"])(_ref);
-        $(selector).parent('form').submit();
-      }, selector);
-    };
+    return page.evaluate(function (_ref) {
+      (0, _objectDestructuringEmpty2["default"])(_ref);
+      $(selector).parent('form').submit();
+    }, selector);
   };
 };
 
-exports._submit = _submit;
+exports.submitImpl = submitImpl;
 
-var _waitForNavigation = function _waitForNavigation(page) {
-  return function () {
-    return page.waitForNavigation();
-  };
+var waitForNavigationImpl = function waitForNavigationImpl(page) {
+  return page.waitForNavigation();
 };
 
-exports._waitForNavigation = _waitForNavigation;
+exports.waitForNavigationImpl = waitForNavigationImpl;
 
-var _waitForSelector = function _waitForSelector(page) {
+var waitForSelectorImpl = function waitForSelectorImpl(page) {
   return function (selector) {
-    return function () {
-      return page.waitForSelector(selector);
-    };
+    return page.waitForSelector(selector);
   };
 };
 
-exports._waitForSelector = _waitForSelector;
+exports.waitForSelectorImpl = waitForSelectorImpl;
