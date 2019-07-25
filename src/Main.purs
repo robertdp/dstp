@@ -1,8 +1,10 @@
 module Main where
 
 import Data.Either
+import Data.Generic.Rep.Show
 import Data.List.NonEmpty
 import Foreign
+import Foreign.Object
 import Prelude
 
 import Control.Monad.Except (runExcept)
@@ -17,24 +19,24 @@ import Effect.Class (liftEffect)
 import Effect.Class.Console as Console
 import Foreign.Generic (class Decode, Foreign, decode)
 
-main :: _
-main = do
-  maybeYaml <- Y.parseYaml' template
-  case maybeYaml of
-    Left e -> Console.log $ show e
-    Right yaml -> do
-      case runExcept(decode yaml) of
-        Left decodeErr ->
-          Console.log $ show $ decodeErr
-        Right output ->
-          Console.log output
-
 --main :: _
---main =  do
---  maybeYaml <- Y.parseYaml template
+--main = do
+--  maybeYaml <- Y.parseYaml' template
 --  case maybeYaml of
---    Nothing -> Console.log "can't load"
---    Just yaml -> Console.log yaml
+--    Left e -> Console.log $ show e
+--    Right yaml -> do
+--      case runExcept(decode yaml) of
+--        Left decodeErr ->
+--          Console.log $ show decodeErr
+--        Right output ->
+--          Console.log $ show output
+
+main :: _
+main =  do
+  maybeYaml <- Y.parseYaml template
+  case maybeYaml of
+    Nothing -> Console.log "can't load"
+    Just yaml -> Console.log yaml
 
 template :: String
 template = """
