@@ -39,34 +39,37 @@ dstp:
 
 -}
 
---data Kind = Goto | Input
 
-newtype Config = Config
+data Config = Config
   { dstp :: Dstp
   }
 
-newtype Dstp = Dstp
+data Dstp = Dstp
   { settings :: Settings
   , routes   :: Maybe (Array Difinitions)
   }
 
-newtype Settings = Settings
+data Settings = Settings
   { headless :: Boolean
   , debug    :: Boolean
   }
 
-newtype Difinitions = Difinitions
+data Difinitions = Difinitions
   { name    :: String
   , baseUrl :: String
   , enabled :: Boolean
-  --, routes   :: Array Kind
+  -- , routes   :: Array Kind
   }
 
-newtype Goto = Goto { url :: String }
+data Goto = Goto
+  { url :: String
+  }
 
-newtype Input = Input { field :: Array Field }
+data Input = Input
+  { field :: Array Field
+  }
 
-newtype Field = Field
+data Field = Field
   { selector :: String
   , value    :: String
   }
@@ -75,6 +78,9 @@ derive instance genericRoot :: Generic Config _
 derive instance genericDstp :: Generic Dstp _
 derive instance genericSettings :: Generic Settings _
 derive instance genericDifinitions :: Generic Difinitions _
+derive instance genericGoto :: Generic Goto _
+derive instance genericInput :: Generic Input _
+derive instance genericField :: Generic Field _
 
 instance showRoot :: Show Config where
   show = genericShow
@@ -88,14 +94,14 @@ instance showSetting :: Show Settings where
 instance showDifinitions :: Show Difinitions where
   show = genericShow
 
---instance showGoto :: Show Goto where
---  show = genericShow
+instance showGoto :: Show Goto where
+ show = genericShow
 
---instance showInput :: Show Input where
---  show = show $ genericShow
---
---instance showField :: Show Field where
---  show = genericShow
+instance showInput :: Show Input where
+ show = genericShow
+
+instance showField :: Show Field where
+ show = genericShow
 
 instance decodeRoot :: Decode Config where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
