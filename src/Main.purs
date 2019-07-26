@@ -28,7 +28,7 @@ main = do
       case runExcept(decode yaml) of
         Left decodeErr ->
           Console.log $ show decodeErr
-        Right (output :: Y.Dstp) ->
+        Right (output :: Y.Root) ->
           Console.log $ show output
 
 --main :: _

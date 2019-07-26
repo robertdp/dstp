@@ -46,6 +46,10 @@ dstp:
 
 --data Kind = Goto | Input
 
+newtype Root = Root
+  { dstp :: Dstp
+  }
+
 newtype Dstp = Dstp
   { settings :: Settings
   , routes   :: Maybe (Array Difinitions)
@@ -72,10 +76,13 @@ newtype Field = Field
   , value    :: String
   }
 
-
+derive instance genericRoot :: Generic Root _
 derive instance genericDstp :: Generic Dstp _
 derive instance genericSettings :: Generic Settings _
 derive instance genericDifinitions :: Generic Difinitions _
+
+instance showRoot :: Show Root where
+  show = genericShow
 
 instance showDstp :: Show Dstp where
   show = genericShow
@@ -94,6 +101,9 @@ instance showDifinitions :: Show Difinitions where
 --
 --instance showField :: Show Field where
 --  show = genericShow
+
+instance decodeRoot :: Decode Root where
+  decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
 
 instance decodeDstp :: Decode Dstp where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
