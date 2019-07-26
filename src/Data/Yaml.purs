@@ -1,23 +1,18 @@
 module Data.Yaml where
 
 
-import Control.Apply
-import Data.Generic.Rep
-import Foreign.Generic.Class
 import Prelude
 
-import Control.Monad.Except (lift, runExcept)
+import Control.Monad.Except (runExcept)
 import Data.Either (Either(..))
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
-import Data.Maybe (Maybe(..), fromMaybe)
-import Data.Newtype (class Newtype, unwrap, wrap)
+import Data.Maybe (Maybe(..))
 import Effect (Effect)
-import Effect.Class.Console as Console
-import Effect.Console (log)
 import Effect.Exception (try)
 import Effect.Uncurried (EffectFn1, runEffectFn1)
-import Foreign.Generic (class Decode, Foreign, decode, defaultOptions, genericDecode)
+import Foreign.Generic (Foreign, decode, defaultOptions, genericDecode)
+import Foreign.Generic.Class (class Decode)
 
 foreign import safeLoadImpl :: EffectFn1 String Foreign
 
@@ -46,7 +41,7 @@ dstp:
 
 --data Kind = Goto | Input
 
-newtype Root = Root
+newtype Config = Config
   { dstp :: Dstp
   }
 
@@ -76,12 +71,12 @@ newtype Field = Field
   , value    :: String
   }
 
-derive instance genericRoot :: Generic Root _
+derive instance genericRoot :: Generic Config _
 derive instance genericDstp :: Generic Dstp _
 derive instance genericSettings :: Generic Settings _
 derive instance genericDifinitions :: Generic Difinitions _
 
-instance showRoot :: Show Root where
+instance showRoot :: Show Config where
   show = genericShow
 
 instance showDstp :: Show Dstp where
@@ -102,7 +97,7 @@ instance showDifinitions :: Show Difinitions where
 --instance showField :: Show Field where
 --  show = genericShow
 
-instance decodeRoot :: Decode Root where
+instance decodeRoot :: Decode Config where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
 
 instance decodeDstp :: Decode Dstp where
@@ -113,12 +108,6 @@ instance decodeSettings :: Decode Settings where
 
 instance decodeDifinitions :: Decode Difinitions where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
-
-
-
-parseYaml' :: _
-parseYaml' input = do
-  try $ runEffectFn1 safeLoadImpl input
 
 parseYaml :: forall a. Decode a => String -> Effect (Maybe a)
 parseYaml input = do

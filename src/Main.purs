@@ -1,42 +1,25 @@
 module Main where
 
-import Data.Either
-import Data.Generic.Rep.Show
-import Data.List.NonEmpty
-import Foreign
-import Foreign.Object
 import Prelude
 
-import Control.Monad.Except (runExcept)
 import Data.Maybe (Maybe(..))
-import Data.Newtype (class Newtype, traverse, unwrap, wrap)
-import Data.NonEmpty as NonEmpty
 import Data.Puppeteer as P
 import Data.Yaml as Y
 import Effect (Effect)
-import Effect.Aff (error, launchAff_)
-import Effect.Class (liftEffect)
+import Effect.Aff (launchAff_)
 import Effect.Class.Console as Console
-import Foreign.Generic (class Decode, Foreign, decode)
 
 main :: _
-main = do
-  maybeYaml <- Y.parseYaml' template
-  case maybeYaml of
-    Left e -> Console.log $ show e
-    Right yaml -> do
-      case runExcept(decode yaml) of
-        Left decodeErr ->
-          Console.log $ show decodeErr
-        Right (output :: Y.Root) ->
-          Console.log $ show output
+main =  do
+  loadConfig template
 
---main :: _
---main =  do
---  maybeYaml <- Y.parseYaml template
---  case maybeYaml of
---    Nothing -> Console.log "can't load"
---    Just (yaml :: Y.Dstp) -> Console.log $ show yaml
+loadConfig :: String -> Effect Unit
+loadConfig config = do
+  maybeYaml <- Y.parseYaml config
+  case maybeYaml of
+    Nothing -> Console.log "can't load"
+    Just (yaml :: Y.Config) -> Console.log $ show yaml
+
 
 template :: String
 template = """
