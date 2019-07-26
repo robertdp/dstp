@@ -19,24 +19,24 @@ import Effect.Class (liftEffect)
 import Effect.Class.Console as Console
 import Foreign.Generic (class Decode, Foreign, decode)
 
---main :: _
---main = do
---  maybeYaml <- Y.parseYaml' template
---  case maybeYaml of
---    Left e -> Console.log $ show e
---    Right yaml -> do
---      case runExcept(decode yaml) of
---        Left decodeErr ->
---          Console.log $ show decodeErr
---        Right output ->
---          Console.log $ show output
-
 main :: _
-main =  do
-  maybeYaml <- Y.parseYaml template
+main = do
+  maybeYaml <- Y.parseYaml' template
   case maybeYaml of
-    Nothing -> Console.log "can't load"
-    Just yaml -> Console.log yaml
+    Left e -> Console.log $ show e
+    Right yaml -> do
+      case runExcept(decode yaml) of
+        Left decodeErr ->
+          Console.log $ show decodeErr
+        Right (output :: Y.Dstp) ->
+          Console.log $ show output
+
+--main :: _
+--main =  do
+--  maybeYaml <- Y.parseYaml template
+--  case maybeYaml of
+--    Nothing -> Console.log "can't load"
+--    Just (yaml :: Y.Dstp) -> Console.log $ show yaml
 
 template :: String
 template = """

@@ -47,11 +47,11 @@ dstp:
 --data Kind = Goto | Input
 
 newtype Dstp = Dstp
-  { setting :: Setting
-  , routes  :: Maybe (Array Difinitions)
+  { settings :: Settings
+  , routes   :: Maybe (Array Difinitions)
   }
 
-newtype Setting = Setting
+newtype Settings = Settings
   { headless :: Boolean
   , debug    :: Boolean
   }
@@ -74,13 +74,13 @@ newtype Field = Field
 
 
 derive instance genericDstp :: Generic Dstp _
-derive instance genericSetting :: Generic Setting _
+derive instance genericSettings :: Generic Settings _
 derive instance genericDifinitions :: Generic Difinitions _
 
 instance showDstp :: Show Dstp where
   show = genericShow
 
-instance showSetting :: Show Setting where
+instance showSetting :: Show Settings where
   show = genericShow
 
 instance showDifinitions :: Show Difinitions where
@@ -98,7 +98,7 @@ instance showDifinitions :: Show Difinitions where
 instance decodeDstp :: Decode Dstp where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
 
-instance decodeSetting :: Decode Setting where
+instance decodeSettings :: Decode Settings where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
 
 instance decodeDifinitions :: Decode Difinitions where
@@ -115,7 +115,6 @@ parseYaml input = do
   maybeYaml <- try $ runEffectFn1 safeLoadImpl input
   pure case maybeYaml of
     Left loadErr ->
-      Console.log loadErr
       Nothing
     Right yaml -> do
       case runExcept(decode yaml) of
