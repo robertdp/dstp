@@ -16,37 +16,14 @@ import Foreign.Generic.Class (class Decode)
 
 foreign import safeLoadImpl :: EffectFn1 String Foreign
 
-{-
-yaml structure
-
-dstp:
-  settings:
-    headless: boolean
-    debug: boolean
-
-  difinitions:
-    - name string
-      baseUrl: string
-      enabled: boolean
-      route:
-        - type: "goto"
-          url: string
-        - type: "imput"
-          field:
-            selector: string
-            value: string
-
-
--}
-
 
 data Config = Config
   { dstp :: Dstp
   }
 
 data Dstp = Dstp
-  { settings :: Settings
-  , routes   :: Maybe (Array Difinitions)
+  { settings :: Maybe Settings
+  , difinitions   :: Maybe (Array Difinitions)
   }
 
 data Settings = Settings
@@ -58,15 +35,22 @@ data Difinitions = Difinitions
   { name    :: String
   , baseUrl :: String
   , enabled :: Boolean
-  -- , routes   :: Array Kind
+  , routes   :: Maybe (Array Routes)
+  }
+
+data Types = GotoType Goto | InputType Input
+data Routes = Routes
+  { route :: Types
   }
 
 data Goto = Goto
-  { url :: String
+  { kind :: String
+  , url :: String
   }
 
 data Input = Input
-  { field :: Array Field
+  { kind :: String
+  , field :: Field
   }
 
 data Field = Field
@@ -81,8 +65,10 @@ derive instance genericDifinitions :: Generic Difinitions _
 derive instance genericGoto :: Generic Goto _
 derive instance genericInput :: Generic Input _
 derive instance genericField :: Generic Field _
+derive instance genericRoutes :: Generic Routes _
+derive instance genericTypes :: Generic Types _
 
-instance showRoot :: Show Config where
+instance showConfig :: Show Config where
   show = genericShow
 
 instance showDstp :: Show Dstp where
@@ -103,7 +89,13 @@ instance showInput :: Show Input where
 instance showField :: Show Field where
  show = genericShow
 
-instance decodeRoot :: Decode Config where
+instance showRoutes :: Show Routes where
+ show = genericShow
+
+instance showTypes :: Show Types where
+ show = genericShow
+
+instance decodeConfig :: Decode Config where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
 
 instance decodeDstp :: Decode Dstp where
@@ -114,6 +106,24 @@ instance decodeSettings :: Decode Settings where
 
 instance decodeDifinitions :: Decode Difinitions where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
+
+instance decodeGoto :: Decode Goto where
+  decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
+
+instance decodeInput :: Decode Input where
+  decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
+
+instance decodeField :: Decode Field where
+  decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
+
+instance decodeRoutes :: Decode Routes where
+  decode = genericDecode defaultOptions
+
+instance decodeTypes :: Decode Types where
+  decode = genericDecode defaultOptions
+
+parseYaml' :: _
+parseYaml' input = try $ runEffectFn1 safeLoadImpl input
 
 parseYaml :: forall a. Decode a => String -> Effect (Maybe a)
 parseYaml input = do
