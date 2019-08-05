@@ -44,19 +44,17 @@ dstp:
   settings:
     headless: false
     debug: true
-
   difinitions:
-    - name: 'bord'
-      baseUrl: 'https://example.com'
-      enabled: true
-      routes:
-       - kind: 'goto'
-         url: 'login'
-       - kind: 'input'
-         field:
-           selector: 'input[type=\"email\"]'
-           value: 'hogehoge@example.com'
-
+    name: bord
+    baseUrl: https://example.com
+    enabled: true
+    routes:
+      goto:
+        url: 'a'
+      input:
+        field:
+          selector: b
+          value: a
 """
 
 puppeteer :: Effect Unit

@@ -11,7 +11,7 @@ import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Exception (try)
 import Effect.Uncurried (EffectFn1, runEffectFn1)
-import Foreign.Generic (Foreign, decode, defaultOptions, genericDecode)
+import Foreign.Generic (class Decode, Foreign, decode, defaultOptions, genericDecode)
 import Foreign.Generic.Class (class Decode)
 
 foreign import safeLoadImpl :: EffectFn1 String Foreign
@@ -23,7 +23,7 @@ data Config = Config
 
 data Dstp = Dstp
   { settings :: Maybe Settings
-  , difinitions   :: Maybe (Array Difinitions)
+  , difinitions   :: Maybe Difinitions
   }
 
 data Settings = Settings
@@ -35,22 +35,15 @@ data Difinitions = Difinitions
   { name    :: String
   , baseUrl :: String
   , enabled :: Boolean
-  , routes   :: Maybe (Array Routes)
-  }
-
-data Types = GotoType Goto | InputType Input
-data Routes = Routes
-  { route :: Types
+  , routes  :: { goto :: Maybe Goto, input :: Maybe Input}
   }
 
 data Goto = Goto
-  { kind :: String
-  , url :: String
+  { url :: String
   }
 
 data Input = Input
-  { kind :: String
-  , field :: Field
+  { field :: Field
   }
 
 data Field = Field
@@ -65,8 +58,6 @@ derive instance genericDifinitions :: Generic Difinitions _
 derive instance genericGoto :: Generic Goto _
 derive instance genericInput :: Generic Input _
 derive instance genericField :: Generic Field _
-derive instance genericRoutes :: Generic Routes _
-derive instance genericTypes :: Generic Types _
 
 instance showConfig :: Show Config where
   show = genericShow
@@ -89,12 +80,6 @@ instance showInput :: Show Input where
 instance showField :: Show Field where
  show = genericShow
 
-instance showRoutes :: Show Routes where
- show = genericShow
-
-instance showTypes :: Show Types where
- show = genericShow
-
 instance decodeConfig :: Decode Config where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
 
@@ -115,12 +100,6 @@ instance decodeInput :: Decode Input where
 
 instance decodeField :: Decode Field where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
-
-instance decodeRoutes :: Decode Routes where
-  decode = genericDecode defaultOptions
-
-instance decodeTypes :: Decode Types where
-  decode = genericDecode defaultOptions
 
 parseYaml' :: _
 parseYaml' input = try $ runEffectFn1 safeLoadImpl input
