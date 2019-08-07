@@ -1,20 +1,17 @@
 module Data.Fs where
 
-import Data.Generic.Rep.Show
-import Effect
-import Effect.Uncurried
-import Foreign.Generic
-import Node.Encoding
-import Node.FS.Sync
 import Prelude
 
-import Control.Promise as Promise
-import Data.Either (Either(..))
-import Data.Generic.Rep (class Generic)
-import Data.Maybe (Maybe(..))
-import Effect.Aff (Aff)
-import Effect.Class (liftEffect)
-import Effect.Exception (try)
+import Effect (Effect)
+import Node.Buffer (Buffer)
+import Node.Encoding (Encoding(..))
+import Node.FS.Async as Async
+import Node.FS.Sync as Sync
 
-readFile :: String -> Effect String
-readFile path = readTextFile UTF8 path
+type Path = String
+
+readFile :: Path -> Effect String
+readFile path = Sync.readTextFile UTF8 path
+
+readFileAsync :: Path -> Async.Callback Buffer -> Effect Unit
+readFileAsync path callback = Async.readFile path callback
