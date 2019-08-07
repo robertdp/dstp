@@ -10,6 +10,7 @@
     "foreign",
     "foreign-generic",
     "generics-rep",
+    "node-fs",
     "prelude",
     "psci-support",
     "transformers"

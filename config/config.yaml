@@ -1,0 +1,16 @@
+dstp:
+  settings:
+    headless: false
+    debug: true
+
+  routes:
+    - name: "bord"
+      baseUrl: "https://the-board.jp/"
+      enabled: true
+      route:
+        - type: "goto"
+          url: "user/login"
+        - type: "input"
+          field:
+            selector: "input[type=\"email\"]"
+            value: "info`van-guard.jp"
