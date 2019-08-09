@@ -1,7 +1,7 @@
 dstp:
   settings:
     headless: false
-    debug: true
+    sloMo: 250
   difinitions:
     name: test
     baseUrl: https://example.com
