@@ -1,6 +1,6 @@
 module Main where
 
-import Config as C
+import Dstp as Dstp
 import Prelude
 
 import Data.Fs as F
@@ -22,9 +22,9 @@ loadConfig config = do
   maybeYaml <- Y.parseYaml config
   case maybeYaml of
     Nothing -> Console.log "can't load config file"
-    Just (yaml :: C.Config) -> Console.log $ show yaml
+    Just (yaml :: Dstp.Dstp) -> Console.log $ show yaml
 
-launch :: C.Settings -> Effect Unit
+launch :: Dstp.Settings -> Effect Unit
 launch options = launchAff_ do
   P.launch options
 

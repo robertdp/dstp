@@ -1,4 +1,4 @@
-module Config where
+module Dstp where
 
 import Prelude
 
@@ -8,13 +8,10 @@ import Data.Maybe (Maybe)
 import Foreign.Generic (defaultOptions, genericDecode)
 import Foreign.Generic.Class (class Decode)
 
-data Config = Config
-  { dstp :: Dstp
-  }
-
 data Dstp = Dstp
-  { settings :: Maybe PuppeteerOptions
-  , difinitions   :: Maybe Difinitions
+  { dstp :: { settings    :: Maybe PuppeteerOptions
+            , difinitions :: Maybe Difinitions
+            }
   }
 
 data Settings = Settings
@@ -78,7 +75,6 @@ data WaitForSelector = WaitForSelector
   }
 
 
-derive instance genericRoot :: Generic Config _
 derive instance genericDstp :: Generic Dstp _
 derive instance genericSettings :: Generic Settings _
 derive instance genericDifinitions :: Generic Difinitions _
@@ -90,9 +86,6 @@ derive instance genericClick :: Generic Click _
 derive instance genericScreenshot :: Generic Screenshot _
 derive instance genericClip :: Generic Clip _
 derive instance genericWfs :: Generic WaitForSelector _
-
-instance showConfig :: Show Config where
-  show = genericShow
 
 instance showDstp :: Show Dstp where
   show = genericShow
@@ -126,9 +119,6 @@ instance showClip :: Show Clip where
 
 instance shoewWaitForSelector :: Show WaitForSelector where
   show = genericShow
-
-instance decodeConfig :: Decode Config where
-  decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
 
 instance decodeDstp :: Decode Dstp where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
