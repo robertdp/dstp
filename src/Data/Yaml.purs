@@ -1,17 +1,14 @@
 module Data.Yaml where
 
-
 import Prelude
 
 import Control.Monad.Except (runExcept)
 import Data.Either (Either(..))
-import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Show (genericShow)
 import Data.Maybe (Maybe(..))
 import Effect (Effect)
 import Effect.Exception (try)
 import Effect.Uncurried (EffectFn1, runEffectFn1)
-import Foreign.Generic (class Decode, Foreign, decode, defaultOptions, genericDecode)
+import Foreign.Generic (Foreign, decode)
 import Foreign.Generic.Class (class Decode)
 
 foreign import safeLoadImpl :: EffectFn1 String Foreign

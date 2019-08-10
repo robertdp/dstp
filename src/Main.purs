@@ -3,13 +3,14 @@ module Main where
 import Dstp as Dstp
 import Prelude
 
-import Data.Fs as F
+import Libs.Fs as F
 import Data.Maybe (Maybe(..))
-import Data.Puppeteer as P
+import Libs.Puppeteer as P
 import Data.Yaml as Y
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class.Console as Console
+import Dstp (Dstp)
 
 main :: _
 main =  do
@@ -22,7 +23,7 @@ loadConfig config = do
   maybeYaml <- Y.parseYaml config
   case maybeYaml of
     Nothing -> Console.log "can't load config file"
-    Just (yaml :: Dstp.Dstp) -> Console.log $ show yaml
+    Just (yaml :: Dstp) -> Console.log $ show yaml
 
 launch :: Dstp.Settings -> Effect Unit
 launch options = launchAff_ do

@@ -1,4 +1,4 @@
-module Data.Fs where
+module Libs.Fs where
 
 import Prelude
 

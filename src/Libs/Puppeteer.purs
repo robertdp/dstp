@@ -1,4 +1,4 @@
-module Data.Puppeteer where
+module Libs.Puppeteer where
 
 import Prelude
 
