@@ -13,6 +13,7 @@
     "node-fs",
     "prelude",
     "psci-support",
-    "transformers"
+    "transformers",
+    "yargs"
   ]
 }
