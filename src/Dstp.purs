@@ -9,13 +9,12 @@ import Foreign.Generic (defaultOptions, genericDecode)
 import Foreign.Generic.Class (class Decode)
 
 data Dstp = Dstp
-  { dstp :: { settings    :: Maybe PuppeteerOptions
-            , difinitions :: Maybe Difinitions
-            }
+  { dstp :: Settings
   }
 
 data Settings = Settings
-  { puppeteer :: Maybe PuppeteerOptions
+  { puppeteerOptions :: Maybe PuppeteerOptions
+  , difinitions      :: Maybe Difinitions
   }
 
 data PuppeteerOptions = PuppeteerOptions
@@ -27,13 +26,16 @@ data Difinitions = Difinitions
   { name    :: String
   , baseUrl :: String
   , enabled :: Boolean
-  , routes  :: { goto       :: Maybe Goto
-               , input      :: Maybe Input
-               , click      :: Maybe Click
-               , screenshot :: Maybe Screenshot
-               , waitForNavigation :: Maybe Unit
-               , waitForSelector :: Maybe WaitForSelector
-               }
+  , routes  :: Routes
+  }
+
+data Routes = Routes
+  { goto       :: Maybe Goto
+  , input      :: Maybe Input
+  , click      :: Maybe Click
+  , screenshot :: Maybe Screenshot
+  , waitForNavigation :: Maybe Unit
+  , waitForSelector :: Maybe WaitForSelector
   }
 
 data Goto = Goto
@@ -78,6 +80,7 @@ data WaitForSelector = WaitForSelector
 derive instance genericDstp :: Generic Dstp _
 derive instance genericSettings :: Generic Settings _
 derive instance genericDifinitions :: Generic Difinitions _
+derive instance genericRoutes :: Generic Routes _
 derive instance genericGoto :: Generic Goto _
 derive instance genericInput :: Generic Input _
 derive instance genericField :: Generic Field _
@@ -94,6 +97,9 @@ instance showSetting :: Show Settings where
   show = genericShow
 
 instance showDifinitions :: Show Difinitions where
+  show = genericShow
+
+instance showRoutes :: Show Routes where
   show = genericShow
 
 instance showGoto :: Show Goto where
@@ -127,6 +133,9 @@ instance decodeSettings :: Decode Settings where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
 
 instance decodeDifinitions :: Decode Difinitions where
+  decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
+
+instance decodeRoutes :: Decode Routes where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
 
 instance decodeGoto :: Decode Goto where
