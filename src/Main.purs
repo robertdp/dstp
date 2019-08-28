@@ -1,33 +1,41 @@
 module Main where
 
-import Dstp as Dstp
 import Prelude
 
-import Libs.Fs as F
 import Data.Maybe (Maybe(..))
-import Libs.Puppeteer as P
 import Data.Yaml as Y
+import Dstp (Dstp)
+import Dstp as Dstp
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class.Console as Console
-import Dstp (Dstp)
+import Libs.Fs as F
+import Libs.Puppeteer as P
 
 main :: _
-main =  do
+main = do
   yamlStr <- F.readFile "./config/config.yaml"
   config <- loadConfig yamlStr
-  Console.logShow config
+  case config of
+    Nothing -> Console.log "nothing"
+    Just (c :: Dstp) -> do
+      Console.logShow c
 
-loadConfig :: String -> Effect Unit
+
+loadConfig :: String -> Effect (Maybe Dstp)
 loadConfig config = do
+  Y.parseYaml config
+
+loadConfig' :: String -> Effect Unit
+loadConfig' config = do
   maybeYaml <- Y.parseYaml config
   case maybeYaml of
     Nothing -> Console.log "can't load config file"
     Just (yaml :: Dstp) -> Console.log $ show yaml
 
-launch :: Dstp.Settings -> Effect Unit
-launch options = launchAff_ do
-  P.launch options
+-- launch :: Dstp.Settings -> Effect Unit
+-- launch options = launchAff_ do
+--   P.launch options
 
 
 --puppeteer :: Effect Unit

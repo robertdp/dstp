@@ -13,7 +13,7 @@ import Effect.Uncurried (EffectFn1, EffectFn2, runEffectFn1, runEffectFn2)
 foreign import data Browser :: Type
 foreign import data Page :: Type
 
-foreign import launchImpl :: EffectFn1 Dstp.Settings (Promise Browser)
+foreign import launchImpl :: EffectFn1 Dstp.PuppeteerOptions (Promise Browser)
 foreign import newPageImpl :: EffectFn1 Browser (Promise Page)
 foreign import gotoImpl :: EffectFn2 Page String (Promise Unit)
 foreign import closeImpl :: EffectFn1 Browser (Promise Unit)
@@ -25,7 +25,7 @@ foreign import waitForSelectorImpl :: EffectFn2 Page Selector (Promise Unit)
 
 type Selector = String
 
-launch :: Dstp.Settings -> Aff Browser
+launch :: Dstp.PuppeteerOptions -> Aff Browser
 launch options = do
   promise <- liftEffect (runEffectFn1 launchImpl options)
   Promise.toAff promise
