@@ -1,12 +1,12 @@
 dstp:
-  settings:
+  options:
     headless: false
     sloMo: 250
-  difinitions:
+  tasks:
     name: test
     baseUrl: https://example.com
     enabled: true
-    routes:
+    commands:
       goto:
         url: 'a'
       input:
