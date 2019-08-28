@@ -10,7 +10,7 @@ import Foreign.Generic.Class (class Decode)
 import Types.Task (Task)
 import Types.Options (Options)
 
-data Settings = Settings
+newtype Settings = Settings
   { options :: Maybe Options
   , tasks :: Maybe Task
   }

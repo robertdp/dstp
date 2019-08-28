@@ -9,7 +9,7 @@ import Foreign.Generic (defaultOptions, genericDecode)
 import Foreign.Generic.Class (class Decode)
 import Types.Commands (Commands)
 
-data Task = Task
+newtype Task = Task
   { name    :: String
   , baseUrl :: String
   , enabled :: Boolean

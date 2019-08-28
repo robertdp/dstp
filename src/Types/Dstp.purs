@@ -9,7 +9,7 @@ import Foreign.Generic (defaultOptions, genericDecode)
 import Foreign.Generic.Class (class Decode)
 import Types.Settings (Settings)
 
-data Dstp = Dstp
+newtype Dstp = Dstp
   { dstp :: Settings
   }
 
