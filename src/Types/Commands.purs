@@ -1,4 +1,4 @@
-module Dstp where
+module Types.Commands where
 
 import Prelude
 
@@ -8,98 +8,64 @@ import Data.Maybe (Maybe)
 import Foreign.Generic (defaultOptions, genericDecode)
 import Foreign.Generic.Class (class Decode)
 
-data Dstp = Dstp
-  { dstp :: Settings
-  }
-
-data Settings = Settings
-  { puppeteerOptions :: Maybe PuppeteerOptions
-  , difinitions      :: Maybe Difinitions
-  }
-
-data PuppeteerOptions = PuppeteerOptions
-  { headless   :: Maybe Boolean
-  , sloMo      :: Maybe Number
-  }
-
-data Difinitions = Difinitions
-  { name    :: String
-  , baseUrl :: String
-  , enabled :: Boolean
-  , routes  :: Routes
-  }
-
-data Routes = Routes
-  { goto       :: Maybe Goto
-  , input      :: Maybe Input
-  , click      :: Maybe Click
+newtype Commands = Commands
+  { goto :: Maybe Goto
+  , input :: Maybe Input
+  , click :: Maybe Click
   , screenshot :: Maybe Screenshot
   , waitForNavigation :: Maybe Unit
   , waitForSelector :: Maybe WaitForSelector
   }
 
-data Goto = Goto
+newtype Goto = Goto
   { url :: String
   }
 
-data Input = Input
+newtype Input = Input
   { field :: Field
   }
 
-data Field = Field
+newtype Field = Field
   { selector :: String
   , value    :: String
   }
 
-data Click = Click
+newtype Click = Click
   { selector :: String
   }
 
-data Screenshot = Screenshot
-  { path           :: Maybe String
-  , extension      :: Maybe String
-  , quality        :: Maybe Number
-  , fullPage       :: Maybe Boolean
-  , clip           :: Maybe Clip
+newtype Screenshot = Screenshot
+  { path :: Maybe String
+  , extension :: Maybe String
+  , quality :: Maybe Number
+  , fullPage :: Maybe Boolean
+  , clip :: Maybe Clip
   , omitBackground :: Maybe Boolean
-  , encoding       :: Maybe String
+  , encoding :: Maybe String
   }
 
-data Clip = Clip
-  { x      :: Maybe Number
-  , y      :: Maybe Number
+newtype Clip = Clip
+  { x :: Maybe Number
+  , y :: Maybe Number
   , width  :: Maybe Number
   , height :: Maybe Number
   }
 
-data WaitForSelector = WaitForSelector
+newtype WaitForSelector = WaitForSelector
   { selector :: Maybe String
   }
 
 
-derive instance genericDstp :: Generic Dstp _
-derive instance genericSettings :: Generic Settings _
-derive instance genericDifinitions :: Generic Difinitions _
-derive instance genericRoutes :: Generic Routes _
+derive instance genericRoutes :: Generic Commands _
 derive instance genericGoto :: Generic Goto _
 derive instance genericInput :: Generic Input _
 derive instance genericField :: Generic Field _
-derive instance genericPuppeteerOptions :: Generic PuppeteerOptions _
 derive instance genericClick :: Generic Click _
 derive instance genericScreenshot :: Generic Screenshot _
 derive instance genericClip :: Generic Clip _
 derive instance genericWfs :: Generic WaitForSelector _
 
-instance showDstp :: Show Dstp where
-  show = genericShow
-
-instance showSetting :: Show Settings where
-  show = genericShow
-
-instance showDifinitions :: Show Difinitions where
-  show = genericShow
-
-instance showRoutes :: Show Routes where
+instance showRoutes :: Show Commands where
   show = genericShow
 
 instance showGoto :: Show Goto where
@@ -110,9 +76,6 @@ instance showInput :: Show Input where
 
 instance showField :: Show Field where
  show = genericShow
-
-instance showPuppeteerOptions :: Show PuppeteerOptions where
-  show = genericShow
 
 instance showClick :: Show Click where
   show = genericShow
@@ -126,16 +89,7 @@ instance showClip :: Show Clip where
 instance shoewWaitForSelector :: Show WaitForSelector where
   show = genericShow
 
-instance decodeDstp :: Decode Dstp where
-  decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
-
-instance decodeSettings :: Decode Settings where
-  decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
-
-instance decodeDifinitions :: Decode Difinitions where
-  decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
-
-instance decodeRoutes :: Decode Routes where
+instance decodeRoutes :: Decode Commands where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
 
 instance decodeGoto :: Decode Goto where
@@ -145,9 +99,6 @@ instance decodeInput :: Decode Input where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
 
 instance decodeField :: Decode Field where
-  decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
-
-instance decodePuppeterOptions :: Decode PuppeteerOptions where
   decode = genericDecode $ defaultOptions { unwrapSingleConstructors = true }
 
 instance decodeClick :: Decode Click where

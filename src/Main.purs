@@ -4,8 +4,7 @@ import Prelude
 
 import Data.Maybe (Maybe(..))
 import Data.Yaml as Y
-import Dstp (Dstp)
-import Dstp as Dstp
+import Types.Dstp (Dstp)
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class.Console as Console
