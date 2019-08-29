@@ -7,9 +7,8 @@ dstp:
     baseUrl: https://example.com
     enabled: true
     commands:
-      goto:
+      - command: Goto
         url: 'a'
-      input:
-        field:
-          selector: b
-          value: a
+      - command: SetInput
+        selector: b
+        value: a
